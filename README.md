@@ -9,7 +9,7 @@
 Проект выполнен в рамках курса «Машинное обучение» магистерской программы НИУ ВШЭ 
 [«Машинное обучение и высоконагруженные системы»](https://www.hse.ru/ma/mlds/).
 
-**Для запуска предобученной модели на ваших данных, смотри [(6) Быстрый старт](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#5-%D0%B1%D1%8B%D1%81%D1%82%D1%80%D1%8B%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82).** </br>
+**Для запуска предобученной модели на ваших данных, смотри [(6) Быстрый старт](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#6-%D0%B1%D1%8B%D1%81%D1%82%D1%80%D1%8B%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82).** </br>
 **Обработка первичных данных и разработка модели: [notebooks/homework_practice_01_Astashov.ipynb](https://github.com/igorastashov/price-prediction-linear-models/blob/dev/notebooks/homework_practice_01_Astashov.ipynb).**
 
 ## (1) Задача
@@ -108,21 +108,21 @@ cd ../..
 
 ### Предсказание на одном объекте
 
-Используя Swagger UI для отправки запроса к сервису, необходимо выполнить пункт [(4) Запуск локально](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#3-%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE).
+Используя Swagger UI для отправки запроса к сервису, необходимо выполнить пункт [(4) Запуск локально](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#4-%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE).
 Ввести в форму для отправки запросов `/predict_item` необходимые характериситки автомобиля.
 Отправить запрос, выполнив **"Execute"**.
 
 ### Предсказание на нескольких объектах
 
 По аналогии с [предсказанием на одном объекте](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#%D0%BF%D1%80%D0%B5%D0%B4%D1%81%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BD%D0%B0-%D0%BE%D0%B4%D0%BD%D0%BE%D0%BC-%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82%D0%B5), загрузить в форму `/predict_items` `.csv` файл.
-Который будет содержать данные, соответствующие [(8) Схема](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#7-%D1%81%D1%85%D0%B5%D0%BC%D0%B0).
+Который будет содержать данные, соответствующие [(8) Схема](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#8-%D1%81%D1%85%D0%B5%D0%BC%D0%B0).
 
 ## (7) Обучение и оценка модели
 
 ### Обучение и оценка модели
 
-Необходимо выполнить пункт [(4) Запуск локально](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#3-%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE). Загрузить в Swagger UI файл `.csv` в форму `/fit_model`.
-Который будет содержать данные, соответствующие [(8) Схема](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#7-%D1%81%D1%85%D0%B5%D0%BC%D0%B0), с добавленным столбцом `selling_price: int`.
+Необходимо выполнить пункт [(4) Запуск локально](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#4-%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE). Загрузить в Swagger UI файл `.csv` в форму `/fit_model`.
+Который будет содержать данные, соответствующие [(8) Схема](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#8-%D1%81%D1%85%D0%B5%D0%BC%D0%B0), с добавленным столбцом `selling_price: int`.
 
 ## (8) Схема
 
@@ -204,12 +204,8 @@ Item:
 добавив новые категории.
 
 ### 4. Разработка веб-сервиса.
-Разработан веб-сервис, [(6) Быстрый старт](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#5-%D0%B1%D1%8B%D1%81%D1%82%D1%80%D1%8B%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82).
+Разработан веб-сервис, [(6) Быстрый старт](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#6-%D0%B1%D1%8B%D1%81%D1%82%D1%80%D1%8B%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82).
 
 ## Благодарности
 
 Используемые материалы: [Лекции ВШЭ](https://www.youtube.com/playlist?list=PLmA-1xX7IuzCglOyTkTZ_bBHKd8eUr8pC).
-
-
-
-
