@@ -1,17 +1,23 @@
 import io
 import pickle
 
+import uvicorn
+
 import numpy as np
 import pandas as pd
 from ds.pre_processing import PreprocessingTransformer
 from ds.ridge import ridge_model
-from schemas.schema import Item
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
 
-from fastapi import FastAPI, UploadFile
+from db.db import SessionLocal
+from db.schemas import schemas
+from db.sessions import sessions
+
+from fastapi import FastAPI, Depends, HTTPException, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, StreamingResponse
+from sqlalchemy.orm import Session
 
 description = """
 Данная работа была проделана в соответствии с заданием по курсу Машинное обучение
@@ -22,7 +28,12 @@ description = """
 1. Показать базовую информацию о приложении;
 2. Предсказать стоимость авто по ее введенным характеристикам;
 3. Предсказать стоимость новых авто по характеристикам, переданным .csv файлом;
-4. Переобучить модель на новых данных.
+4. Переобучить модель на новых данных;
+5. Добавить новую временную метку в бд;
+6. Добавить новое авто в бд;
+7. Вывести список авто или список авто по выбранным характериситкам из бд;
+8. Вывести авто по уникальному ключу;
+9. Обновить информацию об авто по ее уникальному ключу.
 """
 
 tags = [{"name": "Допустимые операции"}]
@@ -36,6 +47,14 @@ app = FastAPI(
         "url": "https://github.com/igorastashov",
     },
 )
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 with open("models/model_ridge.pkl", "rb") as file:
@@ -91,7 +110,7 @@ def root() -> dict:
     "/predict_item",
     tags=["2. Предсказать стоимость авто по ее введенным характеристикам"],
 )
-def predict_item(item: Item) -> float:
+def predict_item(item: schemas.Item) -> float:
     """
     Пример передаваемых данных:
 
@@ -192,7 +211,61 @@ def fit_model(file: UploadFile) -> StreamingResponse:
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
 
-if __name__ == "__main__":
-    import uvicorn
+@app.post("/post", response_model=schemas.Timestamp, tags=["5. Добавить новую временную метку в бд"])
+def get_post(timestamp: schemas.Timestamp, db: Session = Depends(get_db)):
+    db_timestamp = sessions.get_timestamp(db=db, timestamp_id=timestamp.id)
+    if db_timestamp is not None:
+        raise HTTPException(
+            status_code=409, detail="Timestamp with this id already exists"
+        )
+    return sessions.create_timestamp(db=db, timestamp=timestamp)
 
+
+@app.post("/create_car", response_model=schemas.Car, tags=["6. Добавить новое авто в бд"])
+def create_car(car: schemas.Car, db: Session = Depends(get_db)):
+    db_car = sessions.get_car(db=db, car_pk=car.pk)
+    if db_car is not None:
+        raise HTTPException(status_code=409, detail="This pk is exist")
+    return sessions.create_car(db=db, car=car)
+
+
+@app.get(
+    "/cars",
+    response_model=list[schemas.Car],
+    tags=["7. Вывести список авто или список авто по выбранным характериситкам из бд"],
+)
+def get_cars(fuel: schemas.CarFuel = None,
+             seller_type: schemas.SellerType = None,
+             transmission: schemas.Transmission = None,
+             owner: schemas.Owner = None,
+             db: Session = Depends(get_db)):
+    cars = sessions.get_cars(db=db,
+                             fuel=fuel,
+                             seller_type=seller_type,
+                             transmission=transmission,
+                             owner=owner
+                             )
+    return cars
+
+
+@app.get("/car/{pk}", response_model=schemas.Car, tags=["8. Вывести авто по уникальному ключу"])
+def get_car_by_pk(pk: int, db: Session = Depends(get_db)):
+    db_car = sessions.get_car(db=db, car_pk=pk)
+    if db_car is None:
+        raise HTTPException(status_code=404, detail="Car not found")
+    return db_car
+
+
+@app.patch("/car/{pk}", response_model=schemas.Car, tags=["9. Обновить информацию об авто по ее уникальному ключу"])
+def update_car(pk: int, car: schemas.Car, db: Session = Depends(get_db)):
+    db_car = sessions.get_car(db=db, car_pk=pk)
+    if db_car is None:
+        raise HTTPException(status_code=404, detail="This pk is not exist")
+    db_car = sessions.get_car(db=db, car_pk=car.pk)
+    if pk != car.pk and db_car is not None:
+        raise HTTPException(status_code=409, detail="Pk does not match index")
+    return sessions.update_car(db=db, car=car)
+
+
+if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
