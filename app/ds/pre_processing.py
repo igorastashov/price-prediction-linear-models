@@ -6,7 +6,8 @@ from typing import Union
 
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder, PolynomialFeatures, StandardScaler
+from sklearn.preprocessing import (OneHotEncoder, PolynomialFeatures,
+                                   StandardScaler)
 
 random.seed(42)
 np.random.seed(42)

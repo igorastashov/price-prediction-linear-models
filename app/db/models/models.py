@@ -1,6 +1,4 @@
-from datetime import datetime
-
-from sqlalchemy import Column, DateTime, Integer, String, Float
+from sqlalchemy import Column, Float, Integer, String
 
 from ..db import Base
 
@@ -8,7 +6,7 @@ from ..db import Base
 class Car(Base):
     __tablename__ = "cars"
 
-    pk = Column(Integer, primary_key=True, unique=True)
+    pk = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     name = Column(String)
     year = Column(Integer)
     km_driven = Column(Integer)
@@ -23,8 +21,8 @@ class Car(Base):
     seats = Column(Float)
 
 
-class Timestamp(Base):
-    __tablename__ = "timestamps"
+class PredictionsModel(Base):
+    __tablename__ = "predictions"
 
-    id = Column(Integer, primary_key=True, unique=True)
-    timestamp = Column(DateTime, default=datetime.now())
+    car_pk = Column(Integer, primary_key=True)
+    predicted_price = Column(Float)

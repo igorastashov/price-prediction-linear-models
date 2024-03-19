@@ -6,7 +6,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-
 MY_DB = "db_cars_for_sale"
 MY_USER = "astashovivl"
 HOST_NAME = "dpg-cns562ol6cac73ask0ug-a.frankfurt-postgres.render.com"
@@ -20,7 +19,11 @@ SQLALCHEMY_DB_URL = (
 
 cars_data = {
     "pk": list(range(3)),
-    "name": ["Renault KWID Climber 1.0 MT BSIV", "Maruti Wagon R LXI", "Hyundai i20 Asta 1.2"],
+    "name": [
+        "Renault KWID Climber 1.0 MT BSIV",
+        "Maruti Wagon R LXI",
+        "Hyundai i20 Asta 1.2",
+    ],
     "year": [2019, 2013, 2013],
     "km_driven": [35000, 58343, 30000],
     "fuel": ["Petrol", "Petrol", "Petrol"],
@@ -34,12 +37,11 @@ cars_data = {
     "seats": [5.0, 5.0, 5.0],
 }
 
-timestamps_data = {"id": [0, 1], "timestamp": [12, 10]}
+predictions_data = {"car_pk": [], "predicted_price": []}
 
 engine = create_engine(SQLALCHEMY_DB_URL, connect_args={})
 
-# populate database with existing data
-for data_name, data in zip(["cars", "timestamps"], [cars_data, timestamps_data]):
+for data_name, data in zip(["cars", "predictions"], [cars_data, predictions_data]):
     df = pd.DataFrame.from_dict(data)
     df.to_sql(data_name, engine, index=False, if_exists="replace")
 

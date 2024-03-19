@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from ..models import models
@@ -16,13 +17,21 @@ def get_car(db: Session, car_pk: int):
     return db.query(models.Car).filter(models.Car.pk == car_pk).first()
 
 
-# def get_cars(db: Session, fuel: str = None):
-#     if fuel:
-#         return db.query(models.Car).filter(models.Car.kind == fuel).all()
-#     else:
-#         return db.query(models.Car).all()
+def get_cars_in_range(db: Session, start_pk: int, end_pk: int):
+    return (
+        db.query(models.Car)
+        .filter(models.Car.pk >= start_pk, models.Car.pk <= end_pk)
+        .all()
+    )
 
-def get_cars(db: Session, fuel: str = None, seller_type: str = None, transmission: str = None, owner: str = None):
+
+def get_cars(
+    db: Session,
+    fuel: str = None,
+    seller_type: str = None,
+    transmission: str = None,
+    owner: str = None,
+):
     query = db.query(models.Car)
 
     if fuel:
@@ -55,15 +64,12 @@ def update_car(db: Session, car: schemas.Car):
     return db_car
 
 
-def create_timestamp(db: Session, timestamp: schemas.Timestamp):
-    db_timestamp = models.Timestamp(**timestamp.model_dump())
-    db.add(db_timestamp)
+def get_max_pk(db: Session):
+    return db.query(func.max(models.Car.pk)).scalar() or 0
+
+
+def save_predictions(db: Session, predictions):
+    for prediction in predictions:
+        db_prediction = models.PredictionsModel(**prediction)
+        db.add(db_prediction)
     db.commit()
-    db.refresh(db_timestamp)
-    return db_timestamp
-
-
-def get_timestamp(db: Session, timestamp_id: int):
-    return (
-        db.query(models.Timestamp).filter(models.Timestamp.id == timestamp_id).first()
-    )
