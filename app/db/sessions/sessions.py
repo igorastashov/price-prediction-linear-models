@@ -49,6 +49,8 @@ def get_cars(
 def update_car(db: Session, car: schemas.Car):
     db_car = db.query(models.Car).filter(models.Car.pk == car.pk).first()
     db_car.name = car.name
+    db_car.year = car.year
+    db_car.km_driven = car.km_driven
     db_car.fuel = car.fuel
     db_car.seller_type = car.seller_type
     db_car.transmission = car.transmission

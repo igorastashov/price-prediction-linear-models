@@ -1,4 +1,5 @@
 import io
+import os
 import pickle
 from typing import Optional
 
@@ -8,11 +9,15 @@ import uvicorn
 from db.db import SessionLocal
 from db.schemas import schemas
 from db.sessions import sessions
+from dotenv import load_dotenv
 from ds.pre_processing import PreprocessingTransformer
 from ds.ridge import ridge_model
 from fastapi import Depends, FastAPI, HTTPException, Query, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache.decorator import cache
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
 from sqlalchemy.orm import Session
@@ -25,7 +30,7 @@ description = """
 Это приложение может:
 1. Показать базовую информацию о приложении;
 2. Добавить новый автомобиль;
-3. Добавить автомобили из .csv файла;
+3. Добавить новые автомобили из .csv файла;
 4. Вывести список автомобилей в соответствии с выбранными характеристиками;
 5. Вывести автомобиль по уникальному ключу;
 6. Обновить информацию об автомобиле по его уникальному ключу";
@@ -36,7 +41,7 @@ description = """
 tags = [{"name": "Допустимые операции"}]
 
 app = FastAPI(
-    title="Сервис предсказания стоимости авто",
+    title="Сервис предсказанию стоимости авто",
     description=description,
     openapi_tags=tags,
     contact={
@@ -44,6 +49,16 @@ app = FastAPI(
         "url": "https://github.com/igorastashov",
     },
 )
+
+USER = "red-cnsm536n7f5s73dbtkrg"
+HOST = "frankfurt-redis.render.com"
+PORT = "6379"
+
+load_dotenv()
+
+redis_url = RedisBackend(f"rediss://{USER}:{os.getenv('REDIS_AUTH')}@{HOST}:{PORT}")
+redis_backend = RedisBackend(redis_url)
+FastAPICache.init(redis_backend)
 
 
 def get_db():
@@ -103,10 +118,8 @@ def root() -> dict:
     return {"message": "Привет!!! Это сервис для предсказания цен на авто."}
 
 
-@app.post(
-    "/create_car", response_model=schemas.Car, tags=["2. Добавить новый автомобиль"]
-)
-def create_car(car: schemas.Car, db: Session = Depends(get_db)):
+@app.post("/add_car", response_model=schemas.Car, tags=["2. Добавить новый автомобиль"])
+def add_car(car: schemas.Car, db: Session = Depends(get_db)):
     """
     Пример передаваемых данных:
 
@@ -130,7 +143,7 @@ def create_car(car: schemas.Car, db: Session = Depends(get_db)):
     return sessions.create_car(db=db, car=car)
 
 
-@app.post("/add_cars_from_csv", tags=["3. Добавить автомобили из .csv файла"])
+@app.post("/add_cars_from_csv", tags=["3. Добавить новые автомобили из .csv файла"])
 def add_cars_from_csv(file: UploadFile, db: Session = Depends(get_db)):
     try:
         df = pd.read_csv(file.file)
@@ -157,6 +170,7 @@ def add_cars_from_csv(file: UploadFile, db: Session = Depends(get_db)):
     response_model=list[schemas.Car],
     tags=["4. Вывести список автомобилей в соответствии с выбранными характеристиками"],
 )
+@cache(expire=300)
 def get_cars(
     fuel: schemas.CarFuel = None,
     seller_type: schemas.SellerType = None,
@@ -191,7 +205,7 @@ def get_car_by_pk(pk: int, db: Session = Depends(get_db)):
     response_model=schemas.Car,
     tags=["6. Обновить информацию об автомобиле по его уникальному ключу"],
 )
-def update_car(pk: int, car: schemas.Car, db: Session = Depends(get_db)):
+def update_car_by_pk(pk: int, car: schemas.Car, db: Session = Depends(get_db)):
     db_car = sessions.get_car(db=db, car_pk=pk)
     if db_car is None:
         raise HTTPException(status_code=404, detail="This pk is not exist")
@@ -205,6 +219,7 @@ def update_car(pk: int, car: schemas.Car, db: Session = Depends(get_db)):
     "/predict_by_range/",
     tags=["7. Предсказать стоимость автомобиля/-ей по выбранному диапазону ключей"],
 )
+@cache(expire=300)
 def predict_by_range(
     start_pk: Optional[int] = Query(None, description="Start PK value"),
     end_pk: Optional[int] = Query(None, description="End PK value"),
