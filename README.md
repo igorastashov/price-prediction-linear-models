@@ -9,9 +9,9 @@
 Проект выполнен в рамках курса «Машинное обучение» магистерской программы НИУ ВШЭ 
 [«Машинное обучение и высоконагруженные системы»](https://www.hse.ru/ma/mlds/).
 
+**[Сервис на Render](https://car-price-prediction-ymuw.onrender.com/docs)**</br>
 **Для запуска предобученной модели на ваших данных, смотри [(6) Быстрый старт](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#6-%D0%B1%D1%8B%D1%81%D1%82%D1%80%D1%8B%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82).** </br>
-**Обработка первичных данных и разработка модели: [notebooks/homework_practice_01_Astashov.ipynb](https://github.com/igorastashov/price-prediction-linear-models/blob/dev/notebooks/homework_practice_01_Astashov.ipynb).** </br>
-**[Сервис на Render](https://car-price-prediction-ymuw.onrender.com/docs)**
+**Обработка первичных данных и разработка модели: [notebooks/homework_practice_01_Astashov.ipynb](https://github.com/igorastashov/price-prediction-linear-models/blob/dev/notebooks/homework_practice_01_Astashov.ipynb).**
 
 ## (1) Задача
 
