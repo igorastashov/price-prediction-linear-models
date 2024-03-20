@@ -134,10 +134,11 @@ cd ../..
 
 ![add_cars](https://github.com/igorastashov/price-prediction-linear-models/assets/90093310/03080001-009c-44ff-b5c0-a08cf36a53d1)
 
-- Используя форму `/predict_by_range`, указать в графе `Start PK value` и `End PK value` уникальные ключи добавленных в базу данных автомобилей.
+- Используя форму `/predict_by_range`, указать в графе `Start PK value` и `End PK value` уникальные ключи добавленных в базу данных автомобилей;
 
 ![predict_cars](https://github.com/igorastashov/price-prediction-linear-models/assets/90093310/f1507112-a78b-4bbe-9ca8-58544df26f6b)
 
+- Результаты предсказания автоматически сохраняются в базу данных таблицы `Predictions` в соответствии со схемой [(8) Схема Predictions](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#8-%D1%81%D1%85%D0%B5%D0%BC%D0%B0).
 
 ## (7) Обучение и оценка модели
 
