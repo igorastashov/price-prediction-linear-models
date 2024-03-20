@@ -10,7 +10,6 @@ COPY . .
 RUN apt-get update && apt-get install -y unzip
 
 # Устанавливаем права выполнения для скриптов
-RUN #chmod +x /web-service/data/download_data.sh
 RUN chmod +x /web-service/app/models/download_model.sh
 RUN chmod +x /web-service/app/weights/download_transformers.sh
 
