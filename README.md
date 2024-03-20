@@ -120,17 +120,24 @@ cd ../..
 
 - Используя Swagger UI для отправки запроса к сервису, необходимо выполнить пункт [(4) Запуск локально](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#4-%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE), либо воспользоваться приложением на [Render]();
 - Добавить в базу данных информацию о новом автомобиле путем ввода в форму для отправки запросов `/add_car` необходимые характеристики автомобиля;
+
+![add_car](https://github.com/igorastashov/price-prediction-linear-models/assets/90093310/08a0f4bf-51d5-48c4-a3eb-710320e559c6)
+
 - Используя форму `/predict_by_range`, указать в графе `Start PK value` и `End PK value` уникальный ключ добавленного в базу данных автомобиля.
 
-![predict-item](https://github.com/igorastashov/price-prediction-linear-models/assets/90093310/441fd963-b7cb-4396-8b13-a2f3091b1295)
+![predict_car](https://github.com/igorastashov/price-prediction-linear-models/assets/90093310/c9e9cfb5-8668-468c-80f0-496497fbc54e)
 
 ### Предсказание на нескольких объектах
 
 - По аналогии с [предсказанием на одном объекте](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#%D0%BF%D1%80%D0%B5%D0%B4%D1%81%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BD%D0%B0-%D0%BE%D0%B4%D0%BD%D0%BE%D0%BC-%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82%D0%B5), загрузить в форму `/add_cars_from_csv` `.csv` файл, с целью добавления автомобилей в базу данных.
 Который будет содержать данные, соответствующие [(8) Схеме Car](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#8-%D1%81%D1%85%D0%B5%D0%BC%D0%B0);
+
+![add_cars](https://github.com/igorastashov/price-prediction-linear-models/assets/90093310/03080001-009c-44ff-b5c0-a08cf36a53d1)
+
 - Используя форму `/predict_by_range`, указать в графе `Start PK value` и `End PK value` уникальные ключи добавленных в базу данных автомобилей.
 
-![predict-items](https://github.com/igorastashov/price-prediction-linear-models/assets/90093310/b80f128f-1d93-44c1-87af-7616445001fb)
+![predict_cars](https://github.com/igorastashov/price-prediction-linear-models/assets/90093310/f1507112-a78b-4bbe-9ca8-58544df26f6b)
+
 
 ## (7) Обучение и оценка модели
 
@@ -139,7 +146,8 @@ cd ../..
 - Необходимо выполнить пункт [(4) Запуск локально](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#4-%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE), либо воспользоваться приложением на [Render]().
 - Загрузить в Swagger UI файл `.csv` в форму `/fit_model`. Который будет содержать данные, соответствующие [(8) Схеме Car](https://github.com/igorastashov/price-prediction-linear-models/tree/dev?tab=readme-ov-file#8-%D1%81%D1%85%D0%B5%D0%BC%D0%B0), с добавленным столбцом `selling_price: int`.
 
-![fit-model](https://github.com/igorastashov/price-prediction-linear-models/assets/90093310/6d92431f-4a82-40c1-b216-cb17e1a72e1b)
+![fit_model](https://github.com/igorastashov/price-prediction-linear-models/assets/90093310/e49c5782-c972-48e6-9253-3801914029c6)
+
 
 ## (8) Схемы
 
