@@ -16,6 +16,8 @@ RUN chmod +x /web-service/app/weights/download_transformers.sh
 # Устанавливаем зависимости из requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+EXPOSE 8000
+
 # Выполняем скрипты при запуске контейнера
 CMD bash -c "cd /web-service/app/models && ./download_model.sh && cd /web-service/app/weights && ./download_transformers.sh && cd /web-service/app && \
     gunicorn main:app \
