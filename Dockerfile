@@ -23,4 +23,4 @@ CMD bash -c "cd /web-service/app/models && ./download_model.sh && cd /web-servic
     gunicorn main:app \
     --workers 4 \
     --worker-class uvicorn.workers.UvicornWorker \
-    --bind=0.0.0.0:8000"
+    --bind=0.0.0.0:8080"
